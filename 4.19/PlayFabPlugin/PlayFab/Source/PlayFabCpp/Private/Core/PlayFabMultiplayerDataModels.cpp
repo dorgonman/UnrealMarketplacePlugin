@@ -1798,6 +1798,8 @@ void PlayFab::MultiplayerModels::FGetBuildResponse::writeJSON(JsonWriter& writer
 
     if (BuildName.IsEmpty() == false) { writer->WriteIdentifierPrefix(TEXT("BuildName")); writer->WriteValue(BuildName); }
 
+    if (BuildStatus.IsEmpty() == false) { writer->WriteIdentifierPrefix(TEXT("BuildStatus")); writer->WriteValue(BuildStatus); }
+
     if (pfContainerFlavor.notNull()) { writer->WriteIdentifierPrefix(TEXT("ContainerFlavor")); writeContainerFlavorEnumJSON(pfContainerFlavor, writer); }
 
     if (ContainerRunCommand.IsEmpty() == false) { writer->WriteIdentifierPrefix(TEXT("ContainerRunCommand")); writer->WriteValue(ContainerRunCommand); }
@@ -1878,6 +1880,13 @@ bool PlayFab::MultiplayerModels::FGetBuildResponse::readFromValue(const TSharedP
     {
         FString TmpValue;
         if (BuildNameValue->TryGetString(TmpValue)) { BuildName = TmpValue; }
+    }
+
+    const TSharedPtr<FJsonValue> BuildStatusValue = obj->TryGetField(TEXT("BuildStatus"));
+    if (BuildStatusValue.IsValid() && !BuildStatusValue->IsNull())
+    {
+        FString TmpValue;
+        if (BuildStatusValue->TryGetString(TmpValue)) { BuildStatus = TmpValue; }
     }
 
     pfContainerFlavor = readContainerFlavorFromValue(obj->TryGetField(TEXT("ContainerFlavor")));
@@ -3155,6 +3164,15 @@ void PlayFab::MultiplayerModels::FRequestMultiplayerServerRequest::writeJSON(Jso
 
     writer->WriteIdentifierPrefix(TEXT("BuildId")); writer->WriteValue(BuildId);
 
+    if (InitialPlayers.Num() != 0)
+    {
+        writer->WriteArrayStart(TEXT("InitialPlayers"));
+        for (const FString& item : InitialPlayers)
+            writer->WriteValue(item);
+        writer->WriteArrayEnd();
+    }
+
+
     writer->WriteArrayStart(TEXT("PreferredRegions"));
     for (const AzureRegion& item : PreferredRegions)
         writeAzureRegionEnumJSON(item, writer);
@@ -3178,6 +3196,8 @@ bool PlayFab::MultiplayerModels::FRequestMultiplayerServerRequest::readFromValue
         FString TmpValue;
         if (BuildIdValue->TryGetString(TmpValue)) { BuildId = TmpValue; }
     }
+
+    obj->TryGetStringArrayField(TEXT("InitialPlayers"), InitialPlayers);
 
     const TArray<TSharedPtr<FJsonValue>>&PreferredRegionsArray = FPlayFabJsonHelpers::ReadArray(obj, TEXT("PreferredRegions"));
     for (int32 Idx = 0; Idx < PreferredRegionsArray.Num(); Idx++)

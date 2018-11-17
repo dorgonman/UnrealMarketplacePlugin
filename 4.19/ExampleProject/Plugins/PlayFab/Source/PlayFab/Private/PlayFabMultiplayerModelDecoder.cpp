@@ -131,6 +131,7 @@ FMultiplayerGetBuildResponse UPlayFabMultiplayerModelDecoder::decodeGetBuildResp
 
     tempStruct.BuildId = !(dataObj->HasField("BuildId")) ? TEXT("") : dataObj->GetStringField("BuildId");
     tempStruct.BuildName = !(dataObj->HasField("BuildName")) ? TEXT("") : dataObj->GetStringField("BuildName");
+    tempStruct.BuildStatus = !(dataObj->HasField("BuildStatus")) ? TEXT("") : dataObj->GetStringField("BuildStatus");
     GetEnumValueFromString<EContainerFlavor>(TEXT("EContainerFlavor"), dataObj->GetStringField("ContainerFlavor"), tempStruct.ContainerFlavor);
     tempStruct.ContainerRunCommand = !(dataObj->HasField("ContainerRunCommand")) ? TEXT("") : dataObj->GetStringField("ContainerRunCommand");
     tempStruct.CreationTime = !(dataObj->HasField("CreationTime")) ? TEXT("") : dataObj->GetStringField("CreationTime");

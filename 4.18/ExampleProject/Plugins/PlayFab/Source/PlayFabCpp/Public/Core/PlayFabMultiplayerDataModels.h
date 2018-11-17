@@ -1200,6 +1200,9 @@ namespace MultiplayerModels
         // [optional] The build name.
         FString BuildName;
 
+        // [optional] The current build status.
+        FString BuildStatus;
+
         // [optional] The flavor of container of he build.
         Boxed<ContainerFlavor> pfContainerFlavor;
 
@@ -1241,6 +1244,7 @@ namespace MultiplayerModels
             FPlayFabCppBaseModel(),
             BuildId(),
             BuildName(),
+            BuildStatus(),
             pfContainerFlavor(),
             ContainerRunCommand(),
             CreationTime(),
@@ -1259,6 +1263,7 @@ namespace MultiplayerModels
             FPlayFabCppBaseModel(),
             BuildId(src.BuildId),
             BuildName(src.BuildName),
+            BuildStatus(src.BuildStatus),
             pfContainerFlavor(src.pfContainerFlavor),
             ContainerRunCommand(src.ContainerRunCommand),
             CreationTime(src.CreationTime),
@@ -2203,6 +2208,11 @@ namespace MultiplayerModels
         // The guid string build ID of the multiplayer server to request.
         FString BuildId;
 
+        /**
+         * [optional] Initial list of players (potentially matchmade) allowed to connect to the game. The game server can use this list to
+         * validate players connecting to it.
+         */
+        TArray<FString> InitialPlayers;
         // The preferred regions to request a multiplayer server from.
         TArray<AzureRegion> PreferredRegions;
         /**
@@ -2218,6 +2228,7 @@ namespace MultiplayerModels
         FRequestMultiplayerServerRequest() :
             FPlayFabCppBaseModel(),
             BuildId(),
+            InitialPlayers(),
             PreferredRegions(),
             SessionCookie(),
             SessionId()
@@ -2226,6 +2237,7 @@ namespace MultiplayerModels
         FRequestMultiplayerServerRequest(const FRequestMultiplayerServerRequest& src) :
             FPlayFabCppBaseModel(),
             BuildId(src.BuildId),
+            InitialPlayers(src.InitialPlayers),
             PreferredRegions(src.PreferredRegions),
             SessionCookie(src.SessionCookie),
             SessionId(src.SessionId)

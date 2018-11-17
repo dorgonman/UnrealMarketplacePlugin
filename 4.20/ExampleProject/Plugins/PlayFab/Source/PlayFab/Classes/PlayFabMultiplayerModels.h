@@ -365,6 +365,9 @@ public:
     /** The build name. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
         FString BuildName;
+    /** The current build status. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
+        FString BuildStatus;
     /** The flavor of container of he build. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
         EContainerFlavor ContainerFlavor;
@@ -768,6 +771,12 @@ public:
     /** The guid string build ID of the multiplayer server to request. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
         FString BuildId;
+    /**
+     * Initial list of players (potentially matchmade) allowed to connect to the game. The game server can use this list to
+     * validate players connecting to it.
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
+        FString InitialPlayers;
     /** The preferred regions to request a multiplayer server from. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Multiplayer | MultiplayerServer Models")
         FString PreferredRegions;
