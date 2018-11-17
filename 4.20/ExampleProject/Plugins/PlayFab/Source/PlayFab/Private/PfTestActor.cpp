@@ -160,9 +160,10 @@ bool APfTestActor::ClassSetup()
         TEST_TITLE_DATA_LOC = FString(ANSI_TO_TCHAR(envPath));
     free(envPath); // It's OK to call free with NULL
 #endif
-
+	const FString FullPathTestTitleData = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*TEST_TITLE_DATA_LOC);
+	auto fullPathTest = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Content"), *TEST_TITLE_DATA_LOC);
     FString titleDataJson;
-    if (FFileHelper::LoadFileToString(titleDataJson, *TEST_TITLE_DATA_LOC))
+    if (FFileHelper::LoadFileToString(titleDataJson, *fullPathTest))
     {
         TSharedPtr<FJsonObject> JsonObject;
         TSharedRef< TJsonReader<> > Reader = TJsonReaderFactory<>::Create(titleDataJson);
@@ -639,7 +640,7 @@ void APfTestActor::OnHelloWorldCloudScript(FClientExecuteCloudScriptResult resul
 {
     UPfTestContext* testContext = dynamic_cast<UPfTestContext*>(customData);
 
-    if (!result.FunctionResult->HasField("messageValue"))
+    if (nullptr == result.FunctionResult || !result.FunctionResult->HasField("messageValue"))
     {
         EndTest(testContext, PlayFabApiTestFinishState::FAILED, "FunctionResult did not contain messageValue");
         return;
